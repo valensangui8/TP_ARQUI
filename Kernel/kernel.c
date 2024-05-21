@@ -50,8 +50,14 @@ int main()
 {	
 	load_idt();
 
-	putPixel(0xFF0000, 20,20);
-	//drawSquare(0xB0CA07, 1024, 768, 4);
+	//time();
+
+	//drawSquare(0x02c736, 1024, 768, 4);
+
+	initialize();
+
+	
+	
 
 	((EntryPoint)sampleCodeModuleAddress)();
 

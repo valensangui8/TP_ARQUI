@@ -1,5 +1,7 @@
 GLOBAL cpuVendor
 GLOBAL get_key
+GLOBAL get_hour
+GLOBAL get_minute
 
 section .text
 	
@@ -36,3 +38,15 @@ get_key:
 	pop rbp
 	ret
 
+get_hour:
+	mov al, 4
+	out 70h, al
+	in al, 71h
+	ret
+
+get_minute:
+	mov al, 2
+	out 70h, al
+	in al, 71h
+	ret
+	
