@@ -21,8 +21,8 @@
 #define YELLOW 0xFFFF00
 #define ORANGE 0xFFA500
 
-static uint32_t characterColor = 0xFFFFFF; // default color white
-static uint32_t backgroundColor = 0x000000; // default color black
+//static uint32_t characterColor = 0xFFFFFF; // default color white
+//static uint32_t backgroundColor = 0x000000; // default color black
 
 static uint16_t x = 0; // donde arranco en x
 static uint16_t y = 0; // donde arranco en y
@@ -91,7 +91,7 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
 
 void drawChar(uint8_t character, int scale) {
     unsigned char * bitMapChar = font[character];
-	
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
     for (int i = 0; i < HEIGHT_FONT * scale; i++) {
         for (int j = 0; j < WIDTH_FONT * scale; j++) {
             int bit = (bitMapChar[i/scale] >> (j/scale)) & 1;
@@ -128,7 +128,6 @@ void clearScreen(){
 }
 
 void drawLine(char letter){
-	delete();
 	if(x + 8 * scale  >= VBE_mode_info->width){
 		x = 10;
 		y += 16 * scale;
@@ -143,22 +142,23 @@ void drawLine(char letter){
 }
 
 void initialize(){
-	drawWord("TP_ARQUI - GRUPO 12$", 1);
-	x += 8 * scale;
-	drawChar('|', scale);
+	drawWord("TP_ARQUI - GRUPO 12$ ", 1);
 }
 
 void updateCursor(){
 	drawChar('|', scale);
+	x -= WIDTH_FONT * scale;
 }
 
 
 void enter(){
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	y += 16 * scale;
 	x = 0;
 	drawWord("TP_ARQUI - GRUPO 12$", 1);
 	flag_enter = 1;
 	x += 8 * scale;
+	updateCursor();
 	return;
 }
 
@@ -168,12 +168,19 @@ void delete(){
 		return;
 	}
 	if(x <= WIDTH_FONT * scale){
-		x = VBE_mode_info->width - WIDTH_FONT * scale;
 		y -= HEIGHT_FONT * scale;
+		x = VBE_mode_info->width - WIDTH_FONT * scale;
 		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		x = VBE_mode_info->width - WIDTH_FONT * scale;
+		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		updateCursor();
 		return;
 	}
-	x -= WIDTH_FONT * scale;
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x + WIDTH_FONT * scale, y);
 	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	x -= WIDTH_FONT * scale;
+	updateCursor();
 	return;
 }
+                                  
+                                           
