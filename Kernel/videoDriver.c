@@ -27,6 +27,7 @@ static uint32_t backgroundColor = 0x000000; // default color black
 static uint16_t x = 0; // donde arranco en x
 static uint16_t y = 0; // donde arranco en y
 static uint64_t scale = 1; // escala de la letra
+static int flag_enter = 1;
 
 
 
@@ -81,8 +82,8 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 }
 
 void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y){
-    for(uint64_t i = x; i < width; i++){
-        for(uint64_t j = y; j < height; j++){
+    for(uint64_t i = x; i-x < width; i++){
+        for(uint64_t j = y; j-y < height; j++){
             putPixel(hexColor, i, j);
         }
     }
@@ -90,7 +91,7 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
 
 void drawChar(uint8_t character, int scale) {
     unsigned char * bitMapChar = font[character];
-	//drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	
     for (int i = 0; i < HEIGHT_FONT * scale; i++) {
         for (int j = 0; j < WIDTH_FONT * scale; j++) {
             int bit = (bitMapChar[i/scale] >> (j/scale)) & 1;
@@ -109,7 +110,6 @@ void drawChar(uint8_t character, int scale) {
 // 			putPixel(0x000000, x + j, y + i);
 // 		}
 // 	}
-	
 // }
 
 void drawWord(char * word, int scale) {
@@ -128,62 +128,52 @@ void clearScreen(){
 }
 
 void drawLine(char letter){
+	delete();
 	if(x + 8 * scale  >= VBE_mode_info->width){
 		x = 10;
 		y += 16 * scale;
+		flag_enter = 0;
 	}
 	if(y + 16 * scale >= VBE_mode_info->height){
 		clearScreen();
 	}
+	
 	drawChar(letter, scale);
-	/updateCursor();
+	updateCursor();
 }
 
 void initialize(){
 	drawWord("TP_ARQUI - GRUPO 12$", 1);
-	
 	x += 8 * scale;
-	
-	//drawChar('|', scale);
-	
-	
-	
+	drawChar('|', scale);
 }
 
-
-
-//void updateCursor(){
-	//drawChar('|', scale);
-//}
+void updateCursor(){
+	drawChar('|', scale);
+}
 
 
 void enter(){
 	y += 16 * scale;
 	x = 0;
 	drawWord("TP_ARQUI - GRUPO 12$", 1);
+	flag_enter = 1;
 	x += 8 * scale;
-
 	return;
 }
 
 
-/*
 void delete(){
-	drawLine('\b');
-	if(x + 8 * scale  >= VBE_mode_info->width){
-		x = 10;
-		y += 16 * scale;
+	if(x <= 21 * 8 * scale && flag_enter == 1){ 
+		return;
 	}
-	if(y + 16 * scale >= VBE_mode_info->height){
-		clearScreen();
+	if(x <= WIDTH_FONT * scale){
+		x = VBE_mode_info->width - WIDTH_FONT * scale;
+		y -= HEIGHT_FONT * scale;
+		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		return;
 	}
-	drawChar(letter, x, y, scale);
-
-	if(x == 21 + 8*scale){
-		if(y== 0){
-			drawChar('');
-			return;
-		}
-		
-	}
-*/
+	x -= WIDTH_FONT * scale;
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	return;
+}

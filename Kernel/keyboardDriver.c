@@ -8,6 +8,8 @@
 static char shiftPressed = 0;
 static char capsLockPressed = 0;
 
+
+
 char keyMap[][2] = { // [cantidad de teclas][2]
                       // primer elemento es la tecla que presionas y el segundo es la tecla sumada con shift
         {0, 0},
@@ -102,9 +104,7 @@ void keyboard_handler(){
 
     // Verificamos si hay lugar en el buffer, si no volvemos al inicio
     if(getKeyMapping(key) == '\b'){
-        //ncBackspace(buffer_pos);
-        deleteBuffAt(buffer_pos);
-        newPos(buffer_pos-1);
+        ncBackspace(buffer_pos);
     }else if(buffer_pos+1 < SIZE ){
         newPos(buffer_pos+1);
         buffer[buffer_pos+1]=0;
@@ -121,22 +121,23 @@ void keyboard_handler(){
     return;
 }
 
-// void ncBackspace(int buffer_pos){
-//     if(buffer_pos==0){
-//         deleteBuffAt(buffer_pos);
-//         newPos(SIZE);
-//         buffer_pos = SIZE;
-//         // hacer borrado en la terminal
-//         return;
-//     }
-//     deleteBuffAt(buffer_pos);
-//     buffer_pos--;
-//     newPos(buffer_pos);
-//     //hacer borrado en la terminal
-//     return;
-// }
+void ncBackspace(int buffer_pos){
+    if(buffer_pos==0){
+        deleteBuffAt(buffer_pos);
+        newPos(SIZE);
+        buffer_pos = SIZE;
+        delete();
+        return;
+    }
+    deleteBuffAt(buffer_pos);
+    buffer_pos--;
+    newPos(buffer_pos);
+    delete();
+    return;
+}
 
 void kb_handler(uint64_t key, char letter){
+    int buffer_pos = getPos();
     if(key == 0x39){
         drawLine(' ');
         return;
@@ -145,19 +146,13 @@ void kb_handler(uint64_t key, char letter){
         enter();
         return;
     }
-    // if(letter == '\b'){
-    //     ncBackspace();
-    //     deleteBuffAt(buffer_pos);
-    //     buffer_pos--;
-    //     return;
-    // }
     if(letter == '\t'){
         for(int i = 0;i<4;i++){
             drawLine(' ');
         }
         return;
     }
-    if(key >= 0 && key < 256 && getKeyMapping(key) != 0){
+    if(key >= 0 && key < 256 && getKeyMapping(key) != 0 && letter != '\b'){
         drawLine(letter);
         return;
     }
