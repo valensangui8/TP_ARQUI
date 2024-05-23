@@ -11,6 +11,7 @@ void zoomIn();
 
 void zoomOut();
 
+void clear();
 
 
 

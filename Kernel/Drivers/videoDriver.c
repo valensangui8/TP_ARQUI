@@ -147,6 +147,13 @@ void clearScreen(){
 	drawWord("TP_ARQUI - GRUPO 12$");
 }
 
+
+void clear(){
+	drawSquare(0x000000, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
+	x = 0;
+	y = 0;
+}
+
 void drawLine(char letter){
 	if(x + 8 * scale  >= VBE_mode_info->width){
 		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
@@ -188,12 +195,16 @@ void enter(){
 }
 
 void incScale(){
-		scale++;
+	scale++;
+	clear();
+	x -= WIDTH_FONT * scale;
+	y -= HEIGHT_FONT * scale;
 }
 
 void decScale(){
 	if(scale > 1){
 		scale--;
+		clear();
 	}
 
 }

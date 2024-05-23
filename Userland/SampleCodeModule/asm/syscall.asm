@@ -8,6 +8,7 @@ GLOBAL call_sys_drawError
 GLOBAL call_sys_commandEnter
 GLOBAL call_sys_zoomIn
 GLOBAL call_sys_zoomOut
+GLOBAL call_sys_clear
 call_sys_read:
     mov rax, 0
     int 80h
@@ -49,5 +50,10 @@ call_sys_zoomIn:
 
 call_sys_zoomOut:
     mov rax, 8
+    int 80h
+    ret
+
+call_sys_clear:
+    mov rax, 9
     int 80h
     ret

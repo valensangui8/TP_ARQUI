@@ -11,6 +11,7 @@ static void sys_drawError(char * command);
 static void sys_commandEnter();
 static void sys_zoomIn();
 static void sys_zoomOut();
+static void sys_clear();
 
 
 void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t rax){
@@ -42,6 +43,9 @@ void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t
         break;
     case 8:
         sys_zoomOut();
+        break;
+    case 9:
+        sys_clear();
         break;
     }
 }
@@ -81,4 +85,8 @@ void sys_zoomIn(){
 
 void sys_zoomOut(){
     decScale();
+}
+
+void sys_clear(){
+    clear();
 }

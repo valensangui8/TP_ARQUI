@@ -1,22 +1,11 @@
 #include <shell.h>
 #include <stdint.h>
 //#include <libc.h>
-//#include <commands.h>
-
-void zoomIn();
-void zoomOut();
+#include <commands.h>
 
 //char * commands[AMOUNT_OF_COMMANDS] = {"man", "time", "registers", "snake", "div0", "invalid op", "clear", "zoom in", "zoom out", "set theme", "Esto es Boca"};
-char * commands[AMOUNT_OF_COMMANDS] = {"zoom in", "zoom out"};
-void (* commandsReferences[])() = { zoomIn, zoomOut};
-
-void zoomIn(){
-    call_sys_zoomIn();
-}
-
-void zoomOut(){
-    call_sys_zoomOut();
-}
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear};
 
 void initialize_shell(char *command) {
     if(*command == 0){

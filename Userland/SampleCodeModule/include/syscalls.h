@@ -13,5 +13,6 @@ extern void call_sys_drawError(char * command);
 extern void call_sys_commandEnter();
 extern void call_sys_zoomIn();
 extern void call_sys_zoomOut();
+extern void call_sys_clear();
 
 #endif
