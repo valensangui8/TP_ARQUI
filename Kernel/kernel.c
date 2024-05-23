@@ -57,6 +57,8 @@ int main()
 	initialize();
 
 	
+
+	
 	//drawSquare(0xFFFFFF, 1000, 1000, 100, 100);
 	//drawSquare(0xFFFFFF, 200, 200, 100, 100);
 

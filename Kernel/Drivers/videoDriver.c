@@ -7,6 +7,10 @@
 #define WIDTH_FONT 8
 #define HEIGHT_FONT 16
 #define TAB_SIZE 4
+#define MAX_X 1008
+#define MAX_Y 736
+#define MIN_X 8
+#define MIN_Y 8
 
 //screen
 #define LAST_X 1024
@@ -89,7 +93,7 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
     }
 }
 
-void drawChar(uint8_t character, int scale) {
+void drawChar(uint8_t character) {
     unsigned char * bitMapChar = font[character];
 	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
     for (int i = 0; i < HEIGHT_FONT * scale; i++) {
@@ -112,10 +116,26 @@ void drawChar(uint8_t character, int scale) {
 // 	}
 // }
 
-void drawWord(char * word, int scale) {
+void commandEnter(){
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	x = 0;
+	y += HEIGHT_FONT * scale;
+}
+
+void drawError(char *word) {
+	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	int i = 0;
+	commandEnter();
+	char * toDraw = "ERROR - command not found: ";
+	drawWord(toDraw);
+	drawWord(word);
+	enter();
+}
+
+void drawWord(char * word) {
     int i = 0;
     while (word[i] != 0) {
-        drawChar(word[i], scale);
+        drawChar(word[i]);
 		i++;
     }
 }
@@ -124,30 +144,35 @@ void clearScreen(){
 	drawSquare(0x000000, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
 	x = 0;
 	y = 0;
-	drawWord("TP_ARQUI - GRUPO 12$", 1);
+	drawWord("TP_ARQUI - GRUPO 12$");
 }
 
 void drawLine(char letter){
 	if(x + 8 * scale  >= VBE_mode_info->width){
+		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 		x = 10;
 		y += 16 * scale;
 		flag_enter = 0;
 	}
 	if(y + 16 * scale >= VBE_mode_info->height){
 		clearScreen();
+		 // REVISAR
+		return;
 	}
-	
-	drawChar(letter, scale);
+	drawChar(letter);
 	updateCursor();
 }
 
 void initialize(){
-	drawWord("TP_ARQUI - GRUPO 12$ ", 1);
+	drawWord("TP_ARQUI - GRUPO 12$ ");
+	updateCursor();
+
 }
 
 void updateCursor(){
-	drawChar('|', scale);
-	x -= WIDTH_FONT * scale;
+	drawSquare(0xFFFFFF, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	//drawChar('|', scale);
+	//x -= WIDTH_FONT * scale;
 }
 
 
@@ -155,32 +180,46 @@ void enter(){
 	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	y += 16 * scale;
 	x = 0;
-	drawWord("TP_ARQUI - GRUPO 12$", 1);
+	drawWord("TP_ARQUI - GRUPO 12$");
 	flag_enter = 1;
 	x += 8 * scale;
 	updateCursor();
 	return;
 }
 
+void incScale(){
+		scale++;
+}
+
+void decScale(){
+	if(scale > 1){
+		scale--;
+	}
+
+}
 
 void delete(){
-	if(x <= 21 * 8 * scale && flag_enter == 1){ 
+	// if(flag_enter == 0){
+	// 	if(x <= 25 * 8 * scale){ 
+	// 	return;
+	// }			
+	//}
+	if(x <= 20 * 8 * scale && flag_enter == 1){ 
 		return;
-	}
+	}																			
 	if(x <= WIDTH_FONT * scale){
-		y -= HEIGHT_FONT * scale;
-		x = VBE_mode_info->width - WIDTH_FONT * scale;
-		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
-		x = VBE_mode_info->width - WIDTH_FONT * scale;
-		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro puntero linea de abajo
+		x = VBE_mode_info->width - WIDTH_FONT * scale; // vuelvo a último lugar de la línea en X
+		y -= HEIGHT_FONT * scale; // vuelvo un renglón para arriba
+		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro letra de linea arriba der
 		updateCursor();
 		return;
 	}
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x + WIDTH_FONT * scale, y);
+	//drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x + WIDTH_FONT * scale, y);
 	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	x -= WIDTH_FONT * scale;
 	updateCursor();
 	return;
 }
-                                  
-                                           
+
+

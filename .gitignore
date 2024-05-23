@@ -9,3 +9,6 @@
 
 #Object files
 *.o
+.vscode/settings.json
+Kernel/.DS_Store
+Kernel/.DS_Store

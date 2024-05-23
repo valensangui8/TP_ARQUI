@@ -6,6 +6,8 @@ GLOBAL picSlaveMask
 GLOBAL haltcpu
 GLOBAL _hlt
 
+GLOBAL _irq80Handler	
+
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler
 GLOBAL _irq02Handler
@@ -15,6 +17,7 @@ GLOBAL _irq05Handler
 
 GLOBAL _exception0Handler
 
+EXTERN idtManager
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 
@@ -113,6 +116,12 @@ picSlaveMask:
     pop     rbp
     retn
 
+
+
+_irq80Handler:
+	mov r9, rax
+	call idtManager
+	iretq
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:

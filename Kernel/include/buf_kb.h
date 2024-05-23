@@ -4,7 +4,8 @@
 typedef struct buff_kb* buff;
 
 struct buff_kb{
-    int pos;
+    int read_pos;  // Posición de lectura
+    int write_pos; // Posición de escritura
     int len;
     char buffer[SIZE];
 };
@@ -12,5 +13,8 @@ struct buff_kb{
 int getPos();
 int newPos(int newPos);
 char * getAddress();
-char getCharAt(int pos);
-void deleteBuffAt(int pos);
+char getCharAt(int write_pos);
+void deleteBuffAt(int write_pos);
+void setReadPos(int read_pos);
+int getReadPos();
+

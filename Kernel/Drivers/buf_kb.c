@@ -3,10 +3,10 @@ static struct buff_kb buffer = {0,0,{0}};
 static buff pointer = &buffer;
 
 int getPos(){
-    return pointer->pos;
+    return pointer->write_pos;
 }
 int newPos(int newPos){
-    pointer->pos= newPos;
+    pointer->write_pos= newPos;
     return newPos;
 }
 char * getAddress(){
@@ -17,4 +17,11 @@ char getCharAt(int pos){
 }
 void deleteBuffAt(int pos){
     pointer->buffer[pos]=0;
+}
+
+void setReadPos(int read_pos){
+    pointer->read_pos = read_pos;
+}
+int getReadPos(){
+    return pointer->read_pos;
 }

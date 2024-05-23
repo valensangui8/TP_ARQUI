@@ -53,7 +53,7 @@ char keyMap[][2] = { // [cantidad de teclas][2]
         {'l', 'L'},
         {';', ':'},
         {'\'', '\"'},
-        {167, '~'},
+        {'`','~'},
         {0, 0}, // left shift 
         {'\\', '|'},
         {'z', 'Z'},
@@ -95,17 +95,12 @@ uint8_t getKeyMapping(uint64_t number) {
 
 void keyboard_handler(){
     uint64_t key = get_key();
-    // if(key == 0){
-    //   return;
-    // }
-    
     char * buffer = getAddress();
     int buffer_pos = getPos();
-
-    // Verificamos si hay lugar en el buffer, si no volvemos al inicio
-    if(getKeyMapping(key) == '\b'){
-        ncBackspace(buffer_pos);
-    }else if(buffer_pos+1 < SIZE ){
+    if(key < 0 || key > 256 || getKeyMapping(key) == 0){
+        return;
+    }
+    if(buffer_pos+1 < SIZE ){
         newPos(buffer_pos+1);
         buffer[buffer_pos+1]=0;
     }else{
@@ -114,49 +109,71 @@ void keyboard_handler(){
     }
     // ya pasados los chekeos, almaceno la key
     char letter = getKeyMapping(key);
-    kb_handler(key,letter);
+    
     buffer[buffer_pos] = letter;
+    //drawLine(buffer[buffer_pos]);
     
     //drawLine(letter);
     return;
 }
 
-void ncBackspace(int buffer_pos){
+void ncBackspace(){
+    int buffer_pos = getPos();
     if(buffer_pos==0){
         deleteBuffAt(buffer_pos);
-        newPos(SIZE);
-        buffer_pos = SIZE;
-        delete();
-        return;
+        buffer_pos = newPos(SIZE);
+    } else {
+        deleteBuffAt(buffer_pos);
+        buffer_pos--;
+        buffer_pos = newPos(buffer_pos);
     }
-    deleteBuffAt(buffer_pos);
-    buffer_pos--;
-    newPos(buffer_pos);
-    delete();
+    delete(); // Llama a la función delete
     return;
 }
 
 void kb_handler(uint64_t key, char letter){
     int buffer_pos = getPos();
-    if(key == 0x39){
-        drawLine(' ');
-        return;
-    }
-    if(letter == '\n'){
-        enter();
-        return;
-    }
-    if(letter == '\t'){
-        for(int i = 0;i<4;i++){
-            drawLine(' ');
-        }
-        return;
-    }
-    if(key >= 0 && key < 256 && getKeyMapping(key) != 0 && letter != '\b'){
-        drawLine(letter);
-        return;
-    }
-    return;
+    // if(letter == '\n'){
+    //     enter();
+    //     return;
+    // }
+    // if(key == 0x39){
+    //     drawLine(' ');
+    //     return;
+    // }
+    // if(letter == '\n'){
+    //     enter();
+    //     return;
+    // }
+    // if(letter == '\t'){
+    //     for(int i = 0;i<4;i++){
+    //         drawLine(' ');
+    //     }
+    //     return;
+    // }
+    // if(key >= 0 && key < 256 && getKeyMapping(key) != 0 && letter != '\b'){
+    //     drawLine(letter);
+    //     return;
+    // }
+    // return;
 }
+
+
+void readChar(uint8_t * buf, uint32_t count, uint32_t * size){
+    char * buffer = getAddress();
+    int write_pos = getPos(); // Posición de escritura
+    int read_pos = getReadPos(); // Posición de lectura
+    int i = 0;
+    while(count !=0  && read_pos != write_pos){
+        buf[i] = buffer[read_pos];
+        read_pos = (read_pos + 1) % SIZE; // Asume que SIZE es el tamaño del buffer
+        i++;
+    }
+    *size = i;
+    setReadPos(read_pos); // Actualiza la posición de lectura
+}
+
+
+
 
 
