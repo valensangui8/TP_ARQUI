@@ -25,12 +25,12 @@
 #define YELLOW 0xFFFF00
 #define ORANGE 0xFFA500
 
-//static uint32_t characterColor = 0xFFFFFF; // default color white
-//static uint32_t backgroundColor = 0x000000; // default color black
+static uint32_t characterColor = 0xFFFFFF; // default color white
+static uint32_t backgroundColor = 0x000000; // default color black
 
 static uint16_t x = 0; // donde arranco en x
 static uint16_t y = 0; // donde arranco en y
-static uint64_t scale = 1; // escala de la letra
+static int scale; // escala de la letra
 static int flag_enter = 1;
 
 
@@ -85,6 +85,8 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
 }
 
+/////////////////DRAW////////////////////
+
 void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y){
     for(uint64_t i = x; i-x < width; i++){
         for(uint64_t j = y; j-y < height; j++){
@@ -95,12 +97,12 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
 
 void drawChar(uint8_t character) {
     unsigned char * bitMapChar = font[character];
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
     for (int i = 0; i < HEIGHT_FONT * scale; i++) {
         for (int j = 0; j < WIDTH_FONT * scale; j++) {
             int bit = (bitMapChar[i/scale] >> (j/scale)) & 1;
             if (bit) {
-                putPixel(0xFFFFFF, x + j, y + i);
+                putPixel(characterColor, x + j, y + i);
             }
         }
     }
@@ -108,22 +110,9 @@ void drawChar(uint8_t character) {
 	
 }
 
-// void deleteChar(uint8_t character, int x, int y, int scale) {
-//     for(int i = 0; i < + HEIGHT_FONT * scale; i++){
-// 		for(int j = 0; j < WIDTH_FONT * scale; j++){
-// 			putPixel(0x000000, x + j, y + i);
-// 		}
-// 	}
-// }
-
-void commandEnter(){
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
-	x = 0;
-	y += HEIGHT_FONT * scale;
-}
 
 void drawError(char *word) {
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	int i = 0;
 	commandEnter();
 	char * toDraw = "ERROR - command not found: ";
@@ -140,23 +129,9 @@ void drawWord(char * word) {
     }
 }
 
-void clearScreen(){
-	drawSquare(0x000000, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
-	x = 0;
-	y = 0;
-	drawWord("TP_ARQUI - GRUPO 12$");
-}
-
-
-void clear(){
-	drawSquare(0x000000, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
-	x = 0;
-	y = 0;
-}
-
 void drawLine(char letter){
 	if(x + 8 * scale  >= VBE_mode_info->width){
-		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 		x = 10;
 		y += 16 * scale;
 		flag_enter = 0;
@@ -170,21 +145,49 @@ void drawLine(char letter){
 	updateCursor();
 }
 
-void initialize(){
-	drawWord("TP_ARQUI - GRUPO 12$ ");
-	updateCursor();
-
-}
 
 void updateCursor(){
-	drawSquare(0xFFFFFF, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
-	//drawChar('|', scale);
-	//x -= WIDTH_FONT * scale;
+	drawSquare(characterColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 }
 
 
+drawWithColor(char * word, uint32_t hexColor){
+	characterColor = hexColor;
+	drawWord(word);
+	characterColor = WHITE;
+}
+
+/////////////////CLEAR////////////////////
+
+void clearScreen(){
+	drawSquare(backgroundColor, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
+	x = 0;
+	y = 0;
+	drawWord("TP_ARQUI - GRUPO 12$");
+}
+
+
+void clear(){
+	drawSquare(backgroundColor, VBE_mode_info->width, VBE_mode_info->height, 0, 0);
+	x = 0;
+	y = 0;
+	updateAfterCommand();
+}
+
+/////////////////INITIALIZE////////////////////
+
+void initialize(){
+	scale = 1;
+	drawWord("TP_ARQUI - GRUPO 12$ ");
+	updateCursor();
+}
+
+
+
+/////////////////ENTER////////////////////
+
 void enter(){
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	y += 16 * scale;
 	x = 0;
 	drawWord("TP_ARQUI - GRUPO 12$");
@@ -194,11 +197,23 @@ void enter(){
 	return;
 }
 
+
+void commandEnter(){
+	drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	x = 0;
+	y += HEIGHT_FONT * scale;
+}
+
+
+/////////////////SCALE////////////////////
+
+int getScale(){
+	return scale;
+}
+
 void incScale(){
 	scale++;
 	clear();
-	x -= WIDTH_FONT * scale;
-	y -= HEIGHT_FONT * scale;
 }
 
 void decScale(){
@@ -206,8 +221,19 @@ void decScale(){
 		scale--;
 		clear();
 	}
-
 }
+
+
+void updateAfterCommand(){
+	x -= WIDTH_FONT * scale;
+	y -= HEIGHT_FONT * scale;
+}
+
+
+
+
+
+/////////////////DELETE////////////////////
 
 void delete(){
 	// if(flag_enter == 0){
@@ -219,18 +245,16 @@ void delete(){
 		return;
 	}																			
 	if(x <= WIDTH_FONT * scale){
-		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro puntero linea de abajo
+		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro puntero linea de abajo
 		x = VBE_mode_info->width - WIDTH_FONT * scale; // vuelvo a último lugar de la línea en X
 		y -= HEIGHT_FONT * scale; // vuelvo un renglón para arriba
-		drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro letra de linea arriba der
+		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro letra de linea arriba der
 		updateCursor();
 		return;
 	}
 	//drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x + WIDTH_FONT * scale, y);
-	drawSquare(0x000000, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+	drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
 	x -= WIDTH_FONT * scale;
 	updateCursor();
 	return;
 }
-
-

@@ -4,8 +4,8 @@
 #include <commands.h>
 
 //char * commands[AMOUNT_OF_COMMANDS] = {"man", "time", "registers", "snake", "div0", "invalid op", "clear", "zoom in", "zoom out", "set theme", "Esto es Boca"};
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear};
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help};
 
 void initialize_shell(char *command) {
     if(*command == 0){

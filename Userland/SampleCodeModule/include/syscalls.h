@@ -14,5 +14,6 @@ extern void call_sys_commandEnter();
 extern void call_sys_zoomIn();
 extern void call_sys_zoomOut();
 extern void call_sys_clear();
-
+extern void call_sys_getScale(int * scale);
+extern void call_sys_drawWithColor(char * word, uint32_t hexColor);
 #endif

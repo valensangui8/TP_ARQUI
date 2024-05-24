@@ -9,6 +9,8 @@ GLOBAL call_sys_commandEnter
 GLOBAL call_sys_zoomIn
 GLOBAL call_sys_zoomOut
 GLOBAL call_sys_clear
+GLOBAL call_sys_getScale
+GLOBAL call_sys_drawWithColor
 call_sys_read:
     mov rax, 0
     int 80h
@@ -55,5 +57,15 @@ call_sys_zoomOut:
 
 call_sys_clear:
     mov rax, 9
+    int 80h
+    ret
+
+call_sys_getScale:
+    mov rax, 10
+    int 80h
+    ret
+
+call_sys_drawWithColor:
+    mov rax, 11
     int 80h
     ret

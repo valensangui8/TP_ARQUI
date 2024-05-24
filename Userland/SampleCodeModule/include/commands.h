@@ -3,7 +3,7 @@
 
 
 #include <syscalls.h>
-
+#include <myStdio.h>
 
 //void time();
 
@@ -13,6 +13,9 @@ void zoomOut();
 
 void clear();
 
+void div0();
+
+void help();
 
 
 
