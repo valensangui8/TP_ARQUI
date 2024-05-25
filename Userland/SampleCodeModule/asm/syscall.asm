@@ -8,6 +8,8 @@ GLOBAL call_sys_drawError
 GLOBAL call_sys_commandEnter
 GLOBAL call_sys_zoomIn
 GLOBAL call_sys_zoomOut
+GLOBAL call_sys_get_hour
+GLOBAL call_sys_get_minute
 GLOBAL call_sys_clear
 GLOBAL call_sys_getScale
 GLOBAL call_sys_drawWithColor
@@ -74,4 +76,35 @@ call_sys_drawWithColor:
 call_sys_drawRegisters:
     mov rax, 12
     int 80h
+    ret
+
+call_sys_get_hour:
+.wait:
+    mov al, 0x0A
+    out 0x70, al
+    in al, 0x71
+    test al, 0x80
+    jnz .wait
+
+    mov al, 4
+    out 70h, al
+    in al, 71h
+
+    sti
+    ret
+
+call_sys_get_minute:
+    cli
+.wait:
+    mov al, 0x0A
+    out 0x70, al
+    in al, 0x71
+    test al, 0x80
+    jnz .wait
+
+    mov al, 2
+    out 70h, al
+    in al, 71h
+
+    sti
     ret

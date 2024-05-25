@@ -5,7 +5,7 @@
 #include <syscalls.h>
 #include <myStdio.h>
 
-//void time();
+void time();
 
 void zoomIn();
 

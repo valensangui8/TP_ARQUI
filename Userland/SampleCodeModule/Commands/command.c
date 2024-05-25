@@ -87,3 +87,44 @@ void div0() {
 void registers(){
     call_sys_drawRegisters();
 }
+
+void uint64_to_char(uint64_t num, char* str) {
+    int i = 0;
+	int flag = 0;
+	if(num < 10){
+		flag++;
+	}
+    do {
+        str[i++] = '0' + num % 10;
+        num /= 10;
+    } while (num != 0);
+
+	if(flag){
+		str[i++] = '0';
+	}
+
+    str[i] = '\0';
+    // Invertir la cadena
+    for (int j = 0; j < i / 2; j++) {
+        char temp = str[j];
+        str[j] = str[i - j - 1];
+        str[i - j - 1] = temp;
+    }
+}
+
+void time() {
+    call_sys_drawWord("Current time: ");
+
+    uint64_t hour = call_sys_get_hour();
+    uint64_t minute = call_sys_get_minute();
+
+    char * hourStr;
+    char * minuteStr;
+
+    uint64_to_char(hour, hourStr);
+    uint64_to_char(minute, minuteStr);
+
+    call_sys_drawWord(hourStr);
+    call_sys_drawChar(':');
+    call_sys_drawWord(minuteStr);
+}
