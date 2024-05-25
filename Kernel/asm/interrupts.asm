@@ -6,7 +6,7 @@ GLOBAL picSlaveMask
 GLOBAL haltcpu
 GLOBAL _hlt
 
-GLOBAL _irq80Handler	
+GLOBAL _irq80Handler
 
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler
@@ -23,7 +23,9 @@ EXTERN exceptionDispatcher
 
 SECTION .text
 
+
 %macro pushState 0
+	
 	push rax
 	push rbx
 	push rcx
@@ -40,6 +42,9 @@ SECTION .text
 	push r14
 	push r15
 %endmacro
+
+
+
 
 %macro popState 0
 	pop r15
@@ -62,6 +67,7 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
+	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call irqDispatcher
 
@@ -78,6 +84,7 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 
+	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
@@ -161,3 +168,4 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	

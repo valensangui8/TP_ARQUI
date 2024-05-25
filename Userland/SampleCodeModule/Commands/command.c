@@ -83,3 +83,7 @@ void div0() {
     c = b / a;
     a = c;
 }
+
+void registers(){
+    call_sys_drawRegisters();
+}

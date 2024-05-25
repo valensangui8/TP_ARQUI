@@ -1,7 +1,7 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#define AMOUNT_OF_COMMANDS 5
+#define AMOUNT_OF_COMMANDS 6
 
 // Shell manager
 void initialize_shell(char * command);

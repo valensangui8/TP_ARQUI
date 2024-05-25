@@ -17,6 +17,8 @@ void div0();
 
 void help();
 
+void registers();
+
 
 
 

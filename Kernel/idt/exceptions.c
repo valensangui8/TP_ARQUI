@@ -8,6 +8,14 @@ void exceptionDispatcher(int exception) {
 		zero_division();
 }
 
-static void zero_division() {
-	// Handler para manejar excepcíon
+void zero_division() {
+	//funcion de screenshots de registros
+	drawWord("ERROR: division by zero");
+	enter();
+}
+
+void invalid_op() {
+	//funcion de screenshots de registros
+	drawWord("ERROR: invalid operation");
+	enter();
 }

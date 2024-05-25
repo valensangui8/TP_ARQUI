@@ -3,9 +3,8 @@
 //#include <libc.h>
 #include <commands.h>
 
-//char * commands[AMOUNT_OF_COMMANDS] = {"man", "time", "registers", "snake", "div0", "invalid op", "clear", "zoom in", "zoom out", "set theme", "Esto es Boca"};
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help};
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help", "registers"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help, registers};
 
 void initialize_shell(char *command) {
     if(*command == 0){
@@ -15,10 +14,6 @@ void initialize_shell(char *command) {
     int id = interpretCommand(command);
     char flag = 0;
     executeCommand(id, &flag, command);
-
-    // if(flag == 0) {
-    //     printf("Error: command not found\n");
-    // }
 }
 
 int interpretCommand(char * command) {

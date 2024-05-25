@@ -11,6 +11,7 @@ GLOBAL call_sys_zoomOut
 GLOBAL call_sys_clear
 GLOBAL call_sys_getScale
 GLOBAL call_sys_drawWithColor
+GLOBAL call_sys_drawRegisters
 call_sys_read:
     mov rax, 0
     int 80h
@@ -67,5 +68,10 @@ call_sys_getScale:
 
 call_sys_drawWithColor:
     mov rax, 11
+    int 80h
+    ret
+
+call_sys_drawRegisters:
+    mov rax, 12
     int 80h
     ret

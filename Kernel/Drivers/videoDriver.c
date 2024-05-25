@@ -1,6 +1,7 @@
 #include <videoDriver.h>
 #include <stdint.h>
 #include <font.h>
+#include <naiveConsole.h>
 
 
 //font
@@ -93,6 +94,13 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
             putPixel(hexColor, i, j);
         }
     }
+}
+
+void drawRegisters(uint64_t value){
+    char buffer[256] = {0};
+    uintToBase(value, buffer, 16);
+    drawWord(buffer);
+    commandEnter();
 }
 
 void drawChar(uint8_t character) {

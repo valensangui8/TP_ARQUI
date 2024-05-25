@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
+#include <register.h>
 
 static void sys_Read(uint8_t * buf, uint32_t count, uint32_t * size);
 static void sys_DrawWord(char * word);
@@ -14,6 +15,7 @@ static void sys_zoomOut();
 static void sys_clear();
 static void sys_getScale(int * scale);
 static void sys_drawWithColor(char * word, uint32_t hexColor);
+static void sys_drawRegisters();
 
 void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t rax){
     switch (rax)
@@ -54,7 +56,11 @@ void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t
     case 11:
         sys_drawWithColor((char *) rdi, (uint32_t) rsi);
         break;
+    case 12:
+        sys_drawRegisters();
+        break;
     }
+
 }
 
 
@@ -104,4 +110,8 @@ void sys_getScale(int * scale){
 
 void sys_drawWithColor(char * word, uint32_t hexColor){
     drawWithColor(word, hexColor);
+}
+
+void sys_drawRegisters(){
+    printRegisters();
 }

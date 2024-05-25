@@ -2,6 +2,7 @@
 #include <buf_kb.h>
 #include <lib.h>
 #include <videoDriver.h>
+#include <register.h>
 
 
 
@@ -91,9 +92,7 @@ uint8_t getKeyMapping(uint64_t number) {
     return keyMap[number][0];
 }
 
-
-
-void keyboard_handler(){
+void keyboard_handler(uint64_t * registers){
     uint64_t key = get_key();
     char * buffer = getAddress();
     int buffer_pos = getPos();
@@ -111,9 +110,12 @@ void keyboard_handler(){
     char letter = getKeyMapping(key);
     
     buffer[buffer_pos] = letter;
-    //drawLine(buffer[buffer_pos]);
     
-    //drawLine(letter);
+    if(letter == ','){
+        flag_screenShot = 1;
+        RegisterCopy(&registros, registers);
+        
+    }
     return;
 }
 
@@ -131,34 +133,6 @@ void ncBackspace(){
     return;
 }
 
-void kb_handler(uint64_t key, char letter){
-    int buffer_pos = getPos();
-    // if(letter == '\n'){
-    //     enter();
-    //     return;
-    // }
-    // if(key == 0x39){
-    //     drawLine(' ');
-    //     return;
-    // }
-    // if(letter == '\n'){
-    //     enter();
-    //     return;
-    // }
-    // if(letter == '\t'){
-    //     for(int i = 0;i<4;i++){
-    //         drawLine(' ');
-    //     }
-    //     return;
-    // }
-    // if(key >= 0 && key < 256 && getKeyMapping(key) != 0 && letter != '\b'){
-    //     drawLine(letter);
-    //     return;
-    // }
-    // return;
-}
-
-
 void readChar(uint8_t * buf, uint32_t count, uint32_t * size){
     char * buffer = getAddress();
     int write_pos = getPos(); // Posición de escritura
@@ -172,6 +146,7 @@ void readChar(uint8_t * buf, uint32_t count, uint32_t * size){
     *size = i;
     setReadPos(read_pos); // Actualiza la posición de lectura
 }
+
 
 
 
