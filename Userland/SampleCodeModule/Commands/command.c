@@ -39,8 +39,8 @@ void help(){
     printf(" - shows the different programs available.");
     
 
-    call_sys_drawWithColor(" time", 0x32a852);
-    printf(" - Retrieve the current time.");
+    call_sys_drawWithColor(" date", 0x32a852);
+    printf(" - Retrieve the current day and time.");
    
     
     call_sys_drawWithColor(" eliminator", 0x32a852);
@@ -88,43 +88,82 @@ void registers(){
     call_sys_drawRegisters();
 }
 
-void uint64_to_char(uint64_t num, char* str) {
-    int i = 0;
-	int flag = 0;
-	if(num < 10){
-		flag++;
-	}
+
+/*DATE*/
+
+char timeBuffer[5] = {'\0'};
+char dayBuffer[8] = {'\0'};
+
+unsigned int decode(unsigned int time){
+    return (time >> 4) * 10 + (time & 0x0F);				//Funcion que pasa el tiempo en BCD(binary coded decimal) a un numero en decimal
+}
+static uint32_t numberToBase(uint64_t value, char * buffer, uint32_t base) {
+    char *p = buffer;
+    char *p1, *p2;
+    uint32_t digits = 0;
+
     do {
-        str[i++] = '0' + num % 10;
-        num /= 10;
-    } while (num != 0);
+        uint32_t remainder = value % base;
+        *p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+        digits++;
+    } while (value /= base);
 
-	if(flag){
-		str[i++] = '0';
-	}
+    // Terminate string in buffer.
+    *p = 0;
 
-    str[i] = '\0';
-    // Invertir la cadena
-    for (int j = 0; j < i / 2; j++) {
-        char temp = str[j];
-        str[j] = str[i - j - 1];
-        str[i - j - 1] = temp;
+    //Reverse string in buffer.
+    p1 = buffer;
+    p2 = p - 1;
+    while (p1 < p2)
+    {
+        char tmp = *p1;
+        *p1 = *p2;
+        *p2 = tmp;
+        p1++;
+        p2--;
+    }
+
+    return digits;
+}
+void buildTwoDigitsData(char* buffer, int dataTime) {
+    if (dataTime < 10) {
+        buffer[0] = '0';
+        numberToBase(dataTime, buffer + 1, 10);
+    } else {
+        numberToBase(dataTime, buffer, 10);
     }
 }
+char* getTime(){
+    int hours = decode(call_sys_get_date(HOURS)) - 3;
+    int minutes = decode(call_sys_get_date(MINUTES));
 
-void time() {
+    buildTwoDigitsData(timeBuffer, hours);
+    timeBuffer[2] = ':';
+    buildTwoDigitsData(timeBuffer + 3, minutes);
+    
+    return timeBuffer;
+}
+
+char * getDay() {
+    int day = decode(call_sys_get_date(DAY));
+    int month = decode(call_sys_get_date(MONTH));
+    int year = decode(call_sys_get_date(YEAR));
+
+    buildTwoDigitsData(dayBuffer, day);
+    dayBuffer[2] = '/';
+    buildTwoDigitsData(dayBuffer + 3, month);
+    dayBuffer[5] = '/';
+    buildTwoDigitsData(dayBuffer + 6, year);
+
+    return dayBuffer;
+}
+
+void date() {
+    call_sys_drawWord("Current day: ");
+    call_sys_drawWord(getDay());
+
+    call_sys_commandEnter();
+
     call_sys_drawWord("Current time: ");
-
-    uint64_t hour = call_sys_get_hour();
-    uint64_t minute = call_sys_get_minute();
-
-    char * hourStr;
-    char * minuteStr;
-
-    uint64_to_char(hour, hourStr);
-    uint64_to_char(minute, minuteStr);
-
-    call_sys_drawWord(hourStr);
-    call_sys_drawChar(':');
-    call_sys_drawWord(minuteStr);
+    call_sys_drawWord(getTime());
 }

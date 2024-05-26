@@ -3,8 +3,8 @@
 //#include <libc.h>
 #include <commands.h>
 
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help", "registers", "time"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help, registers, time};
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help", "registers", "date"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help, registers, date};
 
 void initialize_shell(char *command) {
     if(*command == 0){
