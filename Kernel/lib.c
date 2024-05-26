@@ -54,47 +54,47 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 
 /// revisar minutos 
-void time() {
-	uint64_t hour = get_hour();
-	hour -= 0011;
-	uint64_t minute = get_minute();
+// void time() {
+// 	uint64_t hour = get_hour();
+// 	hour -= 0011;
+// 	uint64_t minute = get_minute();
 
-	//pasar hour a char
-	//pasar minute a char
+// 	//pasar hour a char
+// 	//pasar minute a char
 
-	char *hourStr;
-	char *minuteStr;
-	uint64_to_char(hour, hourStr);
-	uint64_to_char(minute, minuteStr);
+// 	char *hourStr;
+// 	char *minuteStr;
+// 	uint64_to_char(hour, hourStr);
+// 	uint64_to_char(minute, minuteStr);
 
 
 
-	drawWord(hourStr, 10 + 16, 40, 1);
-	drawChar(':', 10 + 32, 40, 1);
-	drawWord(minuteStr, 10 + 40, 40, 1);
+// 	drawWord(hourStr, 10 + 16, 40, 1);
+// 	drawChar(':', 10 + 32, 40, 1);
+// 	drawWord(minuteStr, 10 + 40, 40, 1);
 
-}
+// }
 
-void uint64_to_char(uint64_t num, char* str) {
-    int i = 0;
-	int flag = 0;
-	if(num < 10){
-		flag++;
-	}
-    do {
-        str[i++] = '0' + num % 10;
-        num /= 10;
-    } while (num != 0);
+// void uint64_to_char(uint64_t num, char* str) {
+//     int i = 0;
+// 	int flag = 0;
+// 	if(num < 10){
+// 		flag++;
+// 	}
+//     do {
+//         str[i++] = '0' + num % 10;
+//         num /= 10;
+//     } while (num != 0);
 
-	if(flag){
-		str[i++] = '0';
-	}
+// 	if(flag){
+// 		str[i++] = '0';
+// 	}
 
-    str[i] = '\0';
-    // Invertir la cadena
-    for (int j = 0; j < i / 2; j++) {
-        char temp = str[j];
-        str[j] = str[i - j - 1];
-        str[i - j - 1] = temp;
-    }
-}
+//     str[i] = '\0';
+//     // Invertir la cadena
+//     for (int j = 0; j < i / 2; j++) {
+//         char temp = str[j];
+//         str[j] = str[i - j - 1];
+//         str[i - j - 1] = temp;
+//     }
+// }

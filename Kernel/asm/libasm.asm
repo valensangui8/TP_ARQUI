@@ -1,7 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL get_key
-GLOBAL get_hour
-GLOBAL get_minute
+GLOBAL sleep
 
 section .text
 	
@@ -38,15 +37,16 @@ get_key:
 	pop rbp
 	ret
 
-get_hour:
-	mov al, 4
-	out 70h, al
-	in al, 71h
+sleep:
+	mov dword [tv_sec], 5
+	mov dword [tv_usec], 0
+	mov eax, 162
+	mov ebx, timeval
+	int 80h
+
 	ret
 
-get_minute:
-	mov al, 2
-	out 70h, al
-	in al, 71h
-	ret
-	
+section .data
+timeval:
+	tv_sec dd 0
+	tv_usec dd 0

@@ -3,7 +3,6 @@
 #include <font.h>
 #include <naiveConsole.h>
 
-
 //font
 #define WIDTH_FONT 8
 #define HEIGHT_FONT 16
@@ -184,13 +183,26 @@ void clear(){
 
 /////////////////INITIALIZE////////////////////
 
-void initialize(){
+void start() {
+	scale = 3;
+	x = 495;
+	y = 350;
+	drawWord("OS");
 	scale = 1;
+	x -= 60;
+	y += 50;
+	drawWord("Loading...");
+}
+
+void initialize(){
+	
+
+	scale = 1;
+	x = 0;
+	y = 0;
 	drawWord("TP_ARQUI - GRUPO 12$ ");
 	updateCursor();
 }
-
-
 
 /////////////////ENTER////////////////////
 

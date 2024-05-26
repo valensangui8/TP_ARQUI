@@ -50,6 +50,24 @@ int main()
 {	
 	load_idt();
 
+	start();
+
+	// Esto hay que arreglarlo. La idea es usar la syscall nanosleep para que espere 5 segundos.
+	int i = 0;
+	while (i < 100000000) i++;
+
+
+	i = 0;
+	while (i < 100000000) i++;
+
+	i = 0;
+	while (i < 100000000) i++;
+
+
+	// sleep();
+
+	clear();
+
 	initialize();
 
 	((EntryPoint)sampleCodeModuleAddress)();
