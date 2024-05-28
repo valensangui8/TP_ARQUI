@@ -2,6 +2,7 @@
 #include <videoDriver.h>
 #include <keyboardDriver.h>
 #include <register.h>
+#include <time.h>
 
 static void sys_Read(uint8_t * buf, uint32_t count, uint32_t * size);
 static void sys_DrawWord(char * word);
@@ -16,6 +17,8 @@ static void sys_clear();
 static void sys_getScale(int * scale);
 static void sys_drawWithColor(char * word, uint32_t hexColor);
 static void sys_drawRegisters();
+static void sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color);
+static void sys_sleep(unsigned long s);
 
 void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t rax){
     switch (rax)
@@ -58,6 +61,12 @@ void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t
         break;
     case 12:
         sys_drawRegisters();
+        break;
+    case 13:
+        sys_draw((uint32_t) rdi, (uint32_t) rsi, (uint32_t) rdx, (uint32_t) rcx);
+        break;
+    case 14:
+        sys_sleep((unsigned long) rdi);
         break;
     }
 
@@ -113,5 +122,13 @@ void sys_drawWithColor(char * word, uint32_t hexColor){
 }
 
 void sys_drawRegisters(){
-    printRegisters();
+    printRegAsm();
+}
+
+void sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color){
+    draw(x,y,size,color);
+}
+
+void sys_sleep(unsigned long s){
+    sleep(s);
 }

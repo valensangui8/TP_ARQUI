@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <videoDriver.h>
 #include <register.h>
+#include <interrupts.h>
 
 
 
@@ -113,8 +114,7 @@ void keyboard_handler(uint64_t * registers){
     
     if(letter == ','){
         flag_screenShot = 1;
-        RegisterCopy(&registros, registers);
-        
+        saveState();
     }
     return;
 }

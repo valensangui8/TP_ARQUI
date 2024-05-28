@@ -1,6 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL get_key
-GLOBAL sleep
+; GLOBAL sleep
 
 section .text
 	
@@ -37,14 +37,14 @@ get_key:
 	pop rbp
 	ret
 
-sleep:
-	mov dword [tv_sec], 5
-	mov dword [tv_usec], 0
-	mov eax, 162
-	mov ebx, timeval
-	int 80h
+; sleep:
+; 	mov dword [tv_sec], 5
+; 	mov dword [tv_usec], 0
+; 	mov eax, 162
+; 	mov ebx, timeval
+; 	int 80h
 
-	ret
+; 	ret
 
 section .data
 timeval:

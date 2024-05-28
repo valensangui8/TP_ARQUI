@@ -18,4 +18,10 @@ extern void call_sys_clear();
 extern void call_sys_getScale(int * scale);
 extern void call_sys_drawWithColor(char * word, uint32_t hexColor);
 extern void call_sys_drawRegisters();
+extern void call_sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color);
+extern void call_sys_sleep(unsigned long s);
+
+
+
+
 #endif

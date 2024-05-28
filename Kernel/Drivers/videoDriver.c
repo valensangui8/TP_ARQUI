@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <font.h>
 #include <naiveConsole.h>
-
 //font
 #define WIDTH_FONT 8
 #define HEIGHT_FONT 16
@@ -11,6 +10,7 @@
 #define MAX_Y 736
 #define MIN_X 8
 #define MIN_Y 8
+
 
 //screen
 #define LAST_X 1024
@@ -24,8 +24,11 @@
 #define BLACK 0x000000
 #define YELLOW 0xFFFF00
 #define ORANGE 0xFFA500
+static void uint64HexaToString(uint64_t valorHexa, char *hexaString);
+static uint64_t binaryToHex(uint64_t binaryNum);
 
 static uint32_t characterColor = 0xFFFFFF; // default color white
+static uint32_t colorVariable = 0;
 static uint32_t backgroundColor = 0x000000; // default color black
 
 static uint16_t x = 0; // donde arranco en x
@@ -95,11 +98,30 @@ void drawSquare(uint32_t hexColor, uint64_t width, uint64_t height, int x, int y
     }
 }
 
+void draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color){
+	drawSquare(color, size, size, x, y);
+}
+
 void drawRegisters(uint64_t value){
     char buffer[256] = {0};
-    uintToBase(value, buffer, 16);
+	value = binaryToHex(value);
+    uint64HexaToString(value, buffer);
     drawWord(buffer);
     commandEnter();
+}
+
+static uint64_t binaryToHex(uint64_t binaryNum){
+    return binaryNum;
+}
+
+static void uint64HexaToString(uint64_t valorHexa, char *hexaString) {
+    int i;
+    for (i = 15; i >= 0; i--) {
+        uint64_t nibble = (valorHexa >> (i * 4)) & 0xF;
+        hexaString[15 - i] = (nibble < 10) ? (char)('0' + nibble) : (char)('A' + (nibble - 10));
+    }
+    hexaString[16] = 'h';
+    hexaString[17] = '\0'; // Terminar la cadena con el carácter nulo
 }
 
 void drawChar(uint8_t character) {
@@ -131,6 +153,12 @@ void drawError(char *word) {
 void drawWord(char * word) {
     int i = 0;
     while (word[i] != 0) {
+		if(y + 16 * scale >= VBE_mode_info->height){
+			colorVariable = characterColor;
+			characterColor = WHITE;
+			clearScreen();
+			characterColor = colorVariable;
+		}
         drawChar(word[i]);
 		i++;
     }
@@ -145,7 +173,6 @@ void drawLine(char letter){
 	}
 	if(y + 16 * scale >= VBE_mode_info->height){
 		clearScreen();
-		 // REVISAR
 		return;
 	}
 	drawChar(letter);
@@ -163,6 +190,8 @@ drawWithColor(char * word, uint32_t hexColor){
 	drawWord(word);
 	characterColor = WHITE;
 }
+
+
 
 /////////////////CLEAR////////////////////
 
@@ -185,11 +214,11 @@ void clear(){
 
 void start() {
 	scale = 3;
-	x = 495;
+	x = 435;
 	y = 350;
-	drawWord("OS");
+	drawWord("voidOS");
 	scale = 1;
-	x -= 60;
+	x -= 100;
 	y += 50;
 	drawWord("Loading...");
 }
@@ -278,3 +307,5 @@ void delete(){
 	updateCursor();
 	return;
 }
+
+

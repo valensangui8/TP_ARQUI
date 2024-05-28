@@ -4,6 +4,7 @@
 
 #include <syscalls.h>
 #include <myStdio.h>
+#include <eliminator.h>
 
 #define SECONDS 0x0
 #define MINUTES 0x2
@@ -25,6 +26,7 @@ void div0();
 void help();
 
 void registers();
+
 
 
 

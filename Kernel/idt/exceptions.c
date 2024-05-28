@@ -1,21 +1,29 @@
-
+#include <register.h>
 #define ZERO_EXCEPTION_ID 0
+#define INVALID_OP_ID 1
+
 
 static void zero_division();
 
-void exceptionDispatcher(int exception) {
+void exceptionDispatcher(int exception,registerStructT * registers) {
 	if (exception == ZERO_EXCEPTION_ID)
 		zero_division();
+	if(exception == INVALID_OP_ID ){
+		invalid_op();
+	}
+	printRegisters(registers);
 }
 
 void zero_division() {
-	//funcion de screenshots de registros
 	drawWord("ERROR: division by zero");
-	enter();
+	commandEnter();
+	flag_screenShot = 1;
+    //saveState();
 }
 
 void invalid_op() {
-	//funcion de screenshots de registros
 	drawWord("ERROR: invalid operation");
-	enter();
+	commandEnter();
+	flag_screenShot = 1;
+    //saveState();
 }

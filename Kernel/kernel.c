@@ -32,6 +32,9 @@ void * getStackBase()
 		- sizeof(uint64_t)			//Begin at the top of the stack
 	);
 }
+void * retUserland(){
+	return sampleCodeModuleAddress;
+}
 
 void * initializeKernelBinary()
 {
@@ -53,18 +56,19 @@ int main()
 	start();
 
 	// Esto hay que arreglarlo. La idea es usar la syscall nanosleep para que espere 5 segundos.
-	int i = 0;
-	while (i < 100000000) i++;
+	// int i = 0;
+	// while (i < 100000000) i++;
 
 
-	i = 0;
-	while (i < 100000000) i++;
+	// i = 0;
+	// while (i < 100000000) i++;
 
-	i = 0;
-	while (i < 100000000) i++;
+	// i = 0;
+	// while (i < 100000000) i++;
 
 
-	// sleep();
+	sleep(10);
+	start();
 
 	clear();
 

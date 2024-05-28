@@ -17,7 +17,6 @@ typedef struct registerStructT{
 
 extern registerStructT * registers;
 extern int flag_screenShot;
-extern registerStructT registros;
 
-void printRegisters();
+void printRegisters(registerStructT * registers);
 #endif /* _REGISTERS_H */

@@ -13,6 +13,8 @@ GLOBAL call_sys_clear
 GLOBAL call_sys_getScale
 GLOBAL call_sys_drawWithColor
 GLOBAL call_sys_drawRegisters
+GLOBAL call_sys_draw
+GLOBAL call_sys_sleep
 call_sys_read:
     mov rax, 0
     int 80h
@@ -74,6 +76,16 @@ call_sys_drawWithColor:
 
 call_sys_drawRegisters:
     mov rax, 12
+    int 80h
+    ret
+
+call_sys_draw:
+    mov rax, 13
+    int 80h
+    ret
+
+call_sys_sleep:
+    mov rax, 14
     int 80h
     ret
 
