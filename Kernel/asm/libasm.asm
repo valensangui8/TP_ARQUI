@@ -1,6 +1,7 @@
 GLOBAL cpuVendor
 GLOBAL get_key
-; GLOBAL sleep
+GLOBAL outb
+GLOBAL inb
 
 section .text
 	
@@ -37,14 +38,28 @@ get_key:
 	pop rbp
 	ret
 
-; sleep:
-; 	mov dword [tv_sec], 5
-; 	mov dword [tv_usec], 0
-; 	mov eax, 162
-; 	mov ebx, timeval
-; 	int 80h
+inb:                ; Funciones para el correcto funcionamiento del soundDriver
+    push rbp
+    mov rbp, rsp
 
-; 	ret
+    mov rdx,rdi
+    in al,dx        ; pasaje en 8 bits
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
+outb:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, rsi
+    mov rdx, rdi
+    out dx, al        ; pasaje en 8 bits
+
+    mov rsp, rbp
+    pop rbp
+    ret
 
 section .data
 timeval:

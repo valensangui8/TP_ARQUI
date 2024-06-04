@@ -209,6 +209,7 @@ void movePlayer(player * p, player * otherPlayer, char * flag){
         p->y = next_y;
     }
     else{
+        call_sys_sound(1000, 100);
         otherPlayer->score++;
         *flag = 0;
         call_sys_clear();

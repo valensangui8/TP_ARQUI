@@ -17,9 +17,7 @@
 
 
 int main() {
-	//call_sys_enter();
-	//call_sys_drawWord("Hello World");
-	//call_sys_drawChar('H');
+
 	char c;
 	while(1){
 		char  buffer[BUFFER_SIZE] = {0};

@@ -55,18 +55,6 @@ int main()
 
 	start();
 
-	// Esto hay que arreglarlo. La idea es usar la syscall nanosleep para que espere 5 segundos.
-	// int i = 0;
-	// while (i < 100000000) i++;
-
-
-	// i = 0;
-	// while (i < 100000000) i++;
-
-	// i = 0;
-	// while (i < 100000000) i++;
-
-
 	sleep(10);
 	start();
 

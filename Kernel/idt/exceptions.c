@@ -12,18 +12,19 @@ void exceptionDispatcher(int exception,registerStructT * registers) {
 		invalid_op();
 	}
 	printRegisters(registers);
+	enter();
 }
 
 void zero_division() {
 	drawWord("ERROR: division by zero");
 	commandEnter();
 	flag_screenShot = 1;
-    //saveState();
+    
 }
 
 void invalid_op() {
 	drawWord("ERROR: invalid operation");
 	commandEnter();
 	flag_screenShot = 1;
-    //saveState();
+    
 }

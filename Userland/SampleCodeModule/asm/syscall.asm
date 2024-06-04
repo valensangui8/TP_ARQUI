@@ -15,6 +15,7 @@ GLOBAL call_sys_drawWithColor
 GLOBAL call_sys_drawRegisters
 GLOBAL call_sys_draw
 GLOBAL call_sys_sleep
+GLOBAL call_sys_sound
 call_sys_read:
     mov rax, 0
     int 80h
@@ -100,4 +101,9 @@ call_sys_get_date:
 
     mov rsp, rbp
     pop rbp
+    ret
+
+call_sys_sound:
+    mov rax, 15
+    int 80h
     ret

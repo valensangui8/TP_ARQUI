@@ -19,6 +19,7 @@ static void sys_drawWithColor(char * word, uint32_t hexColor);
 static void sys_drawRegisters();
 static void sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color);
 static void sys_sleep(unsigned long s);
+static void sys_sound(uint32_t nFrequence, uint32_t time);
 
 void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t rax){
     switch (rax)
@@ -67,6 +68,9 @@ void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t
         break;
     case 14:
         sys_sleep((unsigned long) rdi);
+        break;
+    case 15:
+        sys_sound((uint32_t) rdi, (uint32_t) rsi);
         break;
     }
 
@@ -131,4 +135,9 @@ void sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color){
 
 void sys_sleep(unsigned long s){
     sleep(s);
+}
+
+void sys_sound(uint32_t nFrequence, uint32_t time){
+    beep();
+    //start_sound(nFrequence, time);
 }

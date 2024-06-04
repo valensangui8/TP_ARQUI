@@ -154,9 +154,11 @@ void drawWord(char * word) {
     int i = 0;
     while (word[i] != 0) {
 		if(y + 16 * scale >= VBE_mode_info->height){
+			clearScreen();
+			
 			colorVariable = characterColor;
 			characterColor = WHITE;
-			clearScreen();
+			//clearScreen();
 			characterColor = colorVariable;
 		}
         drawChar(word[i]);
@@ -167,12 +169,14 @@ void drawWord(char * word) {
 void drawLine(char letter){
 	if(x + 8 * scale  >= VBE_mode_info->width){
 		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
-		x = 10;
+		x = 0;
 		y += 16 * scale;
 		flag_enter = 0;
 	}
 	if(y + 16 * scale >= VBE_mode_info->height){
+		y = 0;
 		clearScreen();
+		flag_enter = 1;
 		return;
 	}
 	drawChar(letter);
@@ -224,8 +228,6 @@ void start() {
 }
 
 void initialize(){
-	
-
 	scale = 1;
 	x = 0;
 	y = 0;
@@ -285,17 +287,12 @@ void updateAfterCommand(){
 /////////////////DELETE////////////////////
 
 void delete(){
-	// if(flag_enter == 0){
-	// 	if(x <= 25 * 8 * scale){ 
-	// 	return;
-	// }			
-	//}
-	if(x <= 20 * 8 * scale && flag_enter == 1){ 
+	if(x <= 21 * 8 * scale && flag_enter == 1){ 
 		return;
 	}																			
-	if(x <= WIDTH_FONT * scale){
+	if(x < WIDTH_FONT * scale){
 		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro puntero linea de abajo
-		x = VBE_mode_info->width - WIDTH_FONT * scale; // vuelvo a último lugar de la línea en X
+		x = VBE_mode_info->width - 2*(WIDTH_FONT * scale); // vuelvo a último lugar de la línea en X
 		y -= HEIGHT_FONT * scale; // vuelvo un renglón para arriba
 		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro letra de linea arriba der
 		updateCursor();

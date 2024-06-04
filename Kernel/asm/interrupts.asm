@@ -222,6 +222,10 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+;Invalid Opcode Exception
+_exception1Handler:
+	exceptionHandler 1
+
 haltcpu:
 	cli
 	hlt
