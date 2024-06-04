@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <font.h>
 #include <naiveConsole.h>
+
 //font
 #define WIDTH_FONT 8
 #define HEIGHT_FONT 16
@@ -339,4 +340,4 @@ void checkHeight(char * HeightPassed){
 	}
 }
 
-
+/////////////////IMAGE////////////////////

@@ -61,6 +61,9 @@ void help(){
 
     call_sys_drawWithColor(" registers", 0x32a852);
     printf(" - View the registers in use after pressing ',' .");
+
+    call_sys_drawWithColor(" itba", 0x32a852);
+    printf(" - We'll show you ITBA's logo after execution.");
  
 
     call_sys_drawWithColor(" EXCEPTIONS", 0xc70e24);

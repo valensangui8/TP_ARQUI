@@ -142,8 +142,6 @@ void sys_sleep(unsigned long s){
 }
 
 void sys_sound(uint32_t nFrequence, uint32_t time){
-    
-    
     start_sound(nFrequence, time);
 }
 

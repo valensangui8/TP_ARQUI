@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <commands.h>
 
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "invalidOpcode", "help", "registers", "date", "eliminator"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, invalidOpcode, help, registers, date, eliminator};
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "invalidOpcode", "help", "registers", "date", "eliminator", "itba"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, invalidOpcode, help, registers, date, eliminator, printLogo};
 
 void initialize_shell(char *command) {
     if(*command == 0){

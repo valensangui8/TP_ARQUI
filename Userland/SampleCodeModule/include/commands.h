@@ -5,6 +5,7 @@
 #include <syscalls.h>
 #include <myStdio.h>
 #include <eliminator.h>
+#include <itba.h>
 
 #define SECONDS 0x0
 #define MINUTES 0x2
@@ -28,6 +29,8 @@ void invalidOpcode();
 void help();
 
 void registers();
+
+
 
 
 
