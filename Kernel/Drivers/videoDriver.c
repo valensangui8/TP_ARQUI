@@ -38,6 +38,7 @@ static uint16_t y = 0; // donde arranco en y
 static int scale; // escala de la letra
 static int flag_enter = 1;
 static int flag_bottom_enter = 0;
+static int commands[10] = {0, 0, 0, 21, 0, 31, 23, 4, 0, 0};
 
 
 
@@ -331,11 +332,11 @@ void delete(){
 /////////////////CHECK////////////////////
 
 
-void checkHeight(char * HeightPassed){
-	if(y + 16 * scale >= VBE_mode_info->height){
+void checkHeight(char * HeightPassed, int command){
+	if(y + commands[command]*16 * scale >= VBE_mode_info->height){
 		*HeightPassed = 1;
 	}
-	else{
+	else {
 		*HeightPassed = 0;
 	}
 }

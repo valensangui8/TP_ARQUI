@@ -1,6 +1,7 @@
 GLOBAL invalidOpcode
 
 section .text
+
 invalidOpcode:
     jmp inval
     ret

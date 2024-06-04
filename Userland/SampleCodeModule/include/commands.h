@@ -6,6 +6,7 @@
 #include <myStdio.h>
 #include <eliminator.h>
 #include <itba.h>
+#include <invOpcode.h>
 
 #define SECONDS 0x0
 #define MINUTES 0x2
@@ -23,8 +24,6 @@ void zoomOut();
 void clear();
 
 void div0();
-
-void invalidOpcode();
 
 void help();
 

@@ -5,7 +5,7 @@
 
 static void zero_division();
 
-void exceptionDispatcher(int exception,registerStructT * registers) {
+void exceptionDispatcher(int exception, registerStructT * registers) {
 	if (exception == ZERO_EXCEPTION_ID)
 		zero_division();
 	if(exception == INVALID_OP_ID ){

@@ -21,7 +21,7 @@ extern void call_sys_drawRegisters();
 extern void call_sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color);
 extern void call_sys_sleep(unsigned long s);
 extern void call_sys_sound(uint32_t nFrequence, uint32_t time);
-extern void call_sys_checkHeight(char * HeightPassed);
+extern void call_sys_checkHeight(char * HeightPassed, int command);
 
 
 #endif

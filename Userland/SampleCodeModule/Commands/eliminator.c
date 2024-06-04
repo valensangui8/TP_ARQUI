@@ -11,7 +11,6 @@ void eliminator(){
     exit = 0;
   
     call_sys_commandEnter();
-    
     // Pide la cantidad de jugadores
     printf("Ingrese la cantidad de jugadores (1 o 2): ");
     call_sys_commandEnter();
@@ -23,9 +22,9 @@ void eliminator(){
     call_sys_drawChar(c);
 
     printMessage();
-    
+
     startGame();
-    
+    return;
 }
 
 void printMessage() {
@@ -148,7 +147,6 @@ void startGame(){
             }
             movePlayer(&player2, &player1, &flag);
         }
-        
     }
     call_sys_clear();
 }
@@ -208,7 +206,7 @@ void movePlayer(player * p, player * otherPlayer, char * flag){
         p->y = next_y;
     }
     else{
-        call_sys_sound(1000, 100);
+        call_sys_sound(1000, 50);
         
         otherPlayer->score++;
         *flag = 0;
@@ -265,47 +263,3 @@ void chatGPT(player * p) {
 
 }
 
-// void chatGPT(player * p) {
-
-//     if( matrix[p->x][(p->y) - 1] && p->dir == UP ){
-//         p->dir = DOWN;
-//         return;
-//     }
-//     if( matrix[(p->x) - 1][p->y] && p->dir == LEFT ){
-//         p->dir = RIGHT;
-//         return;
-//     }
-//     if( matrix[(p->x) + 1][p->y] && p->dir == RIGHT ){
-//         p->dir = LEFT;
-//         return;
-//     }
-//     if( matrix[p->x][(p->y) + 1] && p->dir == DOWN){
-//         p->dir = U;
-//         return;
-//     }
-
-// }
-
-// void search(player * p) {
-//     int flagY = 1;
-//     for (int i = 0; i < Y_SQUARES && flagY; i++) {
-//         if (matrix[p->x][i]) flagY = 0;
-//     }
-
-//     if (flagY) {
-//         if (lastDirX) p->dir = UP; else p->dir = DOWN;
-//         lastDirY = !lastDirY;
-//         return;
-//     }
-
-//     int flagX = 1;
-//     for (int i = 0; i < X_SQUARES && flagX; i++) {
-//         if (matrix[i][p->y]) flagX = 0;
-//     }
-
-//     if (flagX) {
-//        if (lastDirX) p->dir = LEFT; else p->dir = RIGHT;
-//         lastDirX = !lastDirX;
-//         return;
-//     }
-// }

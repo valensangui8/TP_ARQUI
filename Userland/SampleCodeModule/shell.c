@@ -32,13 +32,12 @@ void executeCommand(int indexCommand, char * flag, char * command) {
         return;
     }
     call_sys_commandEnter();
-    commandsReferences[indexCommand]();
     char HeightPassed = 0;
-    call_sys_checkHeight(&HeightPassed);
+    call_sys_checkHeight(&HeightPassed,indexCommand);
     if(HeightPassed == 1){
         call_sys_clear();
-        commandsReferences[indexCommand]();
     }
+    commandsReferences[indexCommand]();
     
     call_sys_enter();
     *flag = 1;

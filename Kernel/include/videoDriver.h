@@ -44,6 +44,6 @@ void delete();
 
 /////////////////CHECK///////////////////
 
-void checkHeight(char * heightPassed);
+void checkHeight(char * heightPassed, int indexCommand);
 
 #endif
