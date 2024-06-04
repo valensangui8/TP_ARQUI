@@ -23,6 +23,8 @@ void clear();
 
 void div0();
 
+void invalidOpcode();
+
 void help();
 
 void registers();

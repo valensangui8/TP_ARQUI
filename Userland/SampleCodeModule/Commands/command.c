@@ -44,8 +44,7 @@ void help(){
    
     
     call_sys_drawWithColor(" eliminator", 0x32a852);
-    printf(" - Play the Eliminator game, available for both single-player and two-player modes. Follow the command with ");
-    printf(" the number of players you want to play with.");
+    printf(" - Play the Eliminator game, available for both single-player and two-player modes.");
   
 
     call_sys_drawWithColor(" clear", 0x32a852);
@@ -67,7 +66,7 @@ void help(){
     call_sys_drawWithColor(" EXCEPTIONS", 0xc70e24);
     call_sys_commandEnter();
 
-    call_sys_drawWithColor(" inval op", 0x32a852);
+    call_sys_drawWithColor(" invalidOpcode", 0x32a852);
     printf(" - Indicates an invalid operation.");
    
 
@@ -87,7 +86,6 @@ void div0() {
 void registers(){
     call_sys_drawRegisters();
 }
-
 
 
 

@@ -23,6 +23,8 @@ void _irq80Handler(void);
 void saveRegisters(registerStructT *registers);
 
 void _exception0Handler(void);
+void _exception6Handler(void);
+
 
 void _cli(void);
 

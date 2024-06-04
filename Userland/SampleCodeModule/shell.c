@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <commands.h>
 
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "help", "registers", "date", "eliminator"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, help, registers, date, eliminator};
+char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "invalidOpcode", "help", "registers", "date", "eliminator"};
+void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, invalidOpcode, help, registers, date, eliminator};
 
 void initialize_shell(char *command) {
     if(*command == 0){
@@ -33,6 +33,13 @@ void executeCommand(int indexCommand, char * flag, char * command) {
     }
     call_sys_commandEnter();
     commandsReferences[indexCommand]();
+    char HeightPassed = 0;
+    call_sys_checkHeight(&HeightPassed);
+    if(HeightPassed == 1){
+        call_sys_clear();
+        commandsReferences[indexCommand]();
+    }
+    
     call_sys_enter();
     *flag = 1;
 }

@@ -20,6 +20,7 @@ static void sys_drawRegisters();
 static void sys_draw(uint32_t x, uint32_t y, uint32_t size, uint32_t color);
 static void sys_sleep(unsigned long s);
 static void sys_sound(uint32_t nFrequence, uint32_t time);
+static void sys_checkHeight(char * HeightPassed);
 
 void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t rax){
     switch (rax)
@@ -72,6 +73,9 @@ void idtManager(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t
     case 15:
         sys_sound((uint32_t) rdi, (uint32_t) rsi);
         break;
+    case 16:
+        sys_checkHeight((char *) rdi);
+        break;
     }
 
 }
@@ -98,7 +102,7 @@ void sys_delete(){
 }
 
 void sys_drawError(char * command){
-    drawError(command, 1);
+    drawError(command);
 }
 
 void sys_commandEnter(){
@@ -138,6 +142,11 @@ void sys_sleep(unsigned long s){
 }
 
 void sys_sound(uint32_t nFrequence, uint32_t time){
-    beep();
-    //start_sound(nFrequence, time);
+    
+    
+    start_sound(nFrequence, time);
+}
+
+void sys_checkHeight(char * HeightPassed){
+    checkHeight(HeightPassed);
 }

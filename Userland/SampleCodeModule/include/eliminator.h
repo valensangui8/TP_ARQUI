@@ -3,6 +3,7 @@
 
 #include <myStdio.h>
 #include <stdint.h>
+#include <syscalls.h>
 
 
 #define MAX_Y 768
@@ -34,5 +35,21 @@ typedef struct player{
 
 
 void eliminator();
+
+void printMessage();
+
+void drawBorders();
+
+void startGame();
+
+void startPlayer();
+
+void movePlayer(player * p, player * otherPlayer, char * flag);
+
+void displayScore(player * p1, player * p2);
+
+void clearMatrix();
+
+void chatGPT(player * p);
 
 #endif

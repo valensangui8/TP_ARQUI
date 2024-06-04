@@ -26,6 +26,7 @@
 #define ORANGE 0xFFA500
 static void uint64HexaToString(uint64_t valorHexa, char *hexaString);
 static uint64_t binaryToHex(uint64_t binaryNum);
+static void drawLine2(char letter);
 
 static uint32_t characterColor = 0xFFFFFF; // default color white
 static uint32_t colorVariable = 0;
@@ -35,6 +36,7 @@ static uint16_t x = 0; // donde arranco en x
 static uint16_t y = 0; // donde arranco en y
 static int scale; // escala de la letra
 static int flag_enter = 1;
+static int flag_bottom_enter = 0;
 
 
 
@@ -59,7 +61,7 @@ struct vbe_mode_info_structure {
 	uint8_t bank_size;		// deprecated; size of a bank, almost always 64 KB but may be 16 KB...
 	uint8_t image_pages;
 	uint8_t reserved0;
- 
+
 	uint8_t red_mask;
 	uint8_t red_position;
 	uint8_t green_mask;
@@ -69,7 +71,7 @@ struct vbe_mode_info_structure {
 	uint8_t reserved_mask;
 	uint8_t reserved_position;
 	uint8_t direct_color_attributes;
- 
+
 	uint32_t framebuffer;		// physical address of the linear frame buffer; write here to draw to the screen
 	uint32_t off_screen_mem_off;
 	uint16_t off_screen_mem_size;	// size of memory in the framebuffer but not being displayed on the screen
@@ -84,7 +86,7 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;
     uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
     framebuffer[offset]     =  (hexColor) & 0xFF;
-    framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF; 
+    framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF;
     framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
 }
 
@@ -136,7 +138,7 @@ void drawChar(uint8_t character) {
         }
     }
 	x += WIDTH_FONT * scale;
-	
+
 }
 
 
@@ -153,18 +155,36 @@ void drawError(char *word) {
 void drawWord(char * word) {
     int i = 0;
     while (word[i] != 0) {
-		if(y + 16 * scale >= VBE_mode_info->height){
-			clearScreen();
-			
-			colorVariable = characterColor;
-			characterColor = WHITE;
-			//clearScreen();
-			characterColor = colorVariable;
-		}
-        drawChar(word[i]);
+		// if(y + 16 * scale >= VBE_mode_info->height){
+		// 	if(flag_bottom_enter == 1){
+		// 		y = 0;
+		// 		flag_bottom_enter = 0;
+		// 	}
+		// 	clearScreen();
+		// 	flag_enter = 1;
+		// 	return;
+		// }
+        drawLine2(word[i]);
 		i++;
     }
 }
+
+static void drawLine2(char letter){
+	if(x + 8 * scale  >= VBE_mode_info->width){
+		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y);
+		x = 0;
+		y += 16 * scale;
+		flag_enter = 0;
+	}
+	if(y + 16 * scale >= VBE_mode_info->height){
+		y = 0;
+		clear();
+		flag_enter = 1;
+		return;
+	}
+	drawChar(letter);
+}
+
 
 void drawLine(char letter){
 	if(x + 8 * scale  >= VBE_mode_info->width){
@@ -245,6 +265,7 @@ void enter(){
 	flag_enter = 1;
 	x += 8 * scale;
 	updateCursor();
+	
 	return;
 }
 
@@ -287,9 +308,9 @@ void updateAfterCommand(){
 /////////////////DELETE////////////////////
 
 void delete(){
-	if(x <= 21 * 8 * scale && flag_enter == 1){ 
+	if(x <= 21 * 8 * scale && flag_enter == 1){
 		return;
-	}																			
+	}
 	if(x < WIDTH_FONT * scale){
 		drawSquare(backgroundColor, WIDTH_FONT * scale, HEIGHT_FONT * scale, x, y); // borro puntero linea de abajo
 		x = VBE_mode_info->width - 2*(WIDTH_FONT * scale); // vuelvo a último lugar de la línea en X
@@ -303,6 +324,19 @@ void delete(){
 	x -= WIDTH_FONT * scale;
 	updateCursor();
 	return;
+}
+
+
+/////////////////CHECK////////////////////
+
+
+void checkHeight(char * HeightPassed){
+	if(y + 16 * scale >= VBE_mode_info->height){
+		*HeightPassed = 1;
+	}
+	else{
+		*HeightPassed = 0;
+	}
 }
 
 

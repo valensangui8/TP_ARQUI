@@ -5,7 +5,7 @@ static int exit;
 static int players;
 static player player1;
 static player player2;
-static int matrix[X_SQUARES][Y_SQUARES] = {0};
+static int matrix[X_SQUARES][Y_SQUARES] = {{0}};
 
 void eliminator(){
     exit = 0;
@@ -79,12 +79,11 @@ void drawBorders(){
 }
 
 void startGame(){
-    int i, j;
     
     player1.score = 0;
     player2.score = 0;
 
-    char c;
+    unsigned char c;
     
     while(exit != 1) {
         startPlayer();
@@ -93,7 +92,7 @@ void startGame(){
         c = 0;
         while(flag){
             call_sys_sleep(100);
-            int size = 0;
+            uint32_t size = 0;
             call_sys_read(&c, 1, &size);
             switch(c) {
                 case 'v':
@@ -210,6 +209,7 @@ void movePlayer(player * p, player * otherPlayer, char * flag){
     }
     else{
         call_sys_sound(1000, 100);
+        
         otherPlayer->score++;
         *flag = 0;
         call_sys_clear();

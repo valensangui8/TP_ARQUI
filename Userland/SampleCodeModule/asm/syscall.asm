@@ -16,6 +16,7 @@ GLOBAL call_sys_drawRegisters
 GLOBAL call_sys_draw
 GLOBAL call_sys_sleep
 GLOBAL call_sys_sound
+GLOBAL call_sys_checkHeight
 call_sys_read:
     mov rax, 0
     int 80h
@@ -105,5 +106,11 @@ call_sys_get_date:
 
 call_sys_sound:
     mov rax, 15
+    int 80h
+    ret
+
+
+call_sys_checkHeight:
+    mov rax, 16
     int 80h
     ret

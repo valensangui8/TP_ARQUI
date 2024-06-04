@@ -1,7 +1,6 @@
 #include <sound.h>
 
 
-
 // Play sound using built in speaker
 static void play_sound(uint32_t nFrequence) {
     uint32_t Div;
@@ -27,10 +26,10 @@ static void nosound() {
     outb(0x61, tmp);
 }
 
-// Make a beep
+//Make a beep
 void beep() {
     play_sound(1000);
-    sleep(100);
+    sleep(1000);
     nosound();
 }
 
