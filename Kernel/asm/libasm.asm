@@ -38,12 +38,12 @@ get_key:
 	pop rbp
 	ret
 
-inb:                ; Funciones para el correcto funcionamiento del soundDriver
+inb:                ; functions inb and outb to access the in/out map for the audio
     push rbp
     mov rbp, rsp
 
     mov rdx,rdi
-    in al,dx        ; pasaje en 8 bits
+    in al,dx        
 
     mov rsp, rbp
     pop rbp
@@ -55,7 +55,7 @@ outb:
 
     mov rax, rsi
     mov rdx, rdi
-    out dx, al        ; pasaje en 8 bits
+    out dx, al
 
     mov rsp, rbp
     pop rbp

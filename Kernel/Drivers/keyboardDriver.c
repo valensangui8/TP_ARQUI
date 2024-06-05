@@ -1,11 +1,7 @@
 #include <keyboardDriver.h>
 #include <videoDriver.h>
 
-
-
 static char shiftPressed = 0;
-
-
 
 char keyMap[][2] = { 
         {0, 0},

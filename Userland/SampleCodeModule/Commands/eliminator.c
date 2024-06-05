@@ -11,7 +11,6 @@ void eliminator(){
     exit = 0;
   
     call_sys_commandEnter();
-    // Pide la cantidad de jugadores
     printf("Ingrese la cantidad de jugadores (1 o 2): ");
     call_sys_commandEnter();
     char c;
@@ -19,7 +18,7 @@ void eliminator(){
     }
     int d = c - '0';
     players = d;
-    call_sys_drawChar(c);
+ 
 
     printMessage();
 
@@ -216,16 +215,8 @@ void movePlayer(player * p, player * otherPlayer, char * flag){
         call_sys_sleep(1000);
     }
 }
-// recibe num jugadores
-// inicializa jugadores y sus posiciones
-// while (exit != 1)
-// sleep
-// cambiar direccion si tocó alguna letra de WASD o IJKL
-// funcion para avanzar en la direccion
-
 
 void displayScore(player * p1, player * p2){
-    // Dibuja los puntajes en la pantalla
     call_sys_commandEnter();
     
     printf("                                            PLAYER1: %d         PLAYER2: %d", p1->score, p2->score);

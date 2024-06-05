@@ -1,8 +1,4 @@
-#include <stdint.h>
-#include <videoDriver.h>
-#include <keyboardDriver.h>
-#include <register.h>
-#include <time.h>
+#include <idtManager.h>
 
 static void sys_Read(uint8_t * buf, uint32_t count, uint32_t * size);
 static void sys_DrawWord(char * word);

@@ -52,9 +52,6 @@ static char * itbaLogo[] = {
 };
 
 
-
-
-
  void printLogo(){
     call_sys_clear();
     for(int i =0; i < ITBA_DIM; i++){

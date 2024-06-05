@@ -57,8 +57,7 @@ int main()
 	load_idt();
 
 	start();
-
-	sleep(10);
+	sleep(1000);
 	start();
 
 	clear();

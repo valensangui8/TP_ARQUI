@@ -15,10 +15,6 @@ char * getAddress(){
 char getCharAt(int pos){
     return pointer->buffer[pos];
 }
-void deleteBuffAt(int pos){
-    pointer->buffer[pos]=0;
-}
-
 void setReadPos(int read_pos){
     pointer->read_pos = read_pos;
 }

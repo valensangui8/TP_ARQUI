@@ -17,7 +17,6 @@ int getPos();
 int newPos(int newPos);
 char * getAddress();
 char getCharAt(int write_pos);
-void deleteBuffAt(int write_pos);
 void setReadPos(int read_pos);
 int getReadPos();
 

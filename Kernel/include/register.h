@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 #include <videoDriver.h>
-//Estructura de los registros que se van a guardar en el snapshot y en las interrupciones
+// structure of registers that will be saved in the snapshot and interrupts
 typedef struct registerStructT{
 	uint64_t rax, rbx, rcx, rdx;
 	uint64_t rsi, rdi, rbp, rsp;

@@ -22,7 +22,7 @@ int main() {
 	while(1){
 		char  buffer[BUFFER_SIZE] = {0};
 		int buffer_pos = 0;
-		while((c=getChar()) != '\n'){// c!=0 switch backs, tab, espacio
+		while((c=getChar()) != '\n'){
 		
 			if(c == 8){ // Backspace key
 				if(buffer_pos > 0){
@@ -49,31 +49,4 @@ int main() {
 
 	}
 }
-	//char c;
 
-//    while (1) {
-//         char  commandBuffer[BUFFER_SIZE] = {0};
-//         int yIndex, position;
-//         yIndex = printShellHeader();
-//         position = 0;
-
-//         while((c=getChar()) != '\n') {
-//             if (c == 8) { // Backspace key
-//                 if ( (cursorY != yIndex) || (cursorX > MIN_X + (HEADER_SIZE * WIDTH_FONT * cursorScale))) {
-//                     position--;
-//                     call_delete_char();
-//                 }
-//             } else if (c == 9) { // Tab key
-//                 for (int i = 0; i < TAB_SIZE; i++) {
-//                     commandBuffer[position++] = ' ';
-//                     call_draw_char(' ');
-//                 }
-//             } else if( c != 27 ) { // Any other key not including ESC key (27)
-//                 commandBuffer[position++] = c;
-//                 call_draw_char(c);
-//             }
-//         } // When "enter" key is pressed, leaves typing loop.
-//         commandBuffer[position] = '\0';
-//         call_c_move(ENTER);
-//         initialize_shell(commandBuffer);
-//     }

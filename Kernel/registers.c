@@ -49,9 +49,3 @@ void printRegisters(registerStructT * registers){
 	drawWord("rflags = 0x");
 	drawRegisters(registers->rflags);
 }
-
-void RegisterCopy(registerStructT * dest, registerStructT * src){
-	for(int i = 0 ; i < REGISTERS ; i++){
-		((uint64_t *) dest)[i] = ((uint64_t *) src)[i];
-	}
-}

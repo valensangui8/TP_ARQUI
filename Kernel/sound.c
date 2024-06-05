@@ -26,7 +26,7 @@ static void nosound() {
     outb(0x61, tmp);
 }
 
-//Make a beep
+// Make a beep
 void beep() {
     play_sound(1000);
     sleep(1000);

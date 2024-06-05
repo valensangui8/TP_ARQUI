@@ -3,10 +3,6 @@
 #include <stdarg.h>
 #include <myStdio.h>
 
-//hacer funciones en c para trabajar en los main
-
-
-
 
 char getChar(){
     uint8_t c;
