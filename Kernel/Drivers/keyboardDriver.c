@@ -1,19 +1,13 @@
 #include <keyboardDriver.h>
-#include <buf_kb.h>
-#include <lib.h>
 #include <videoDriver.h>
-#include <register.h>
-#include <interrupts.h>
 
 
 
 static char shiftPressed = 0;
-static char capsLockPressed = 0;
 
 
 
-char keyMap[][2] = { // [cantidad de teclas][2]
-                      // primer elemento es la tecla que presionas y el segundo es la tecla sumada con shift
+char keyMap[][2] = { 
         {0, 0},
         {0, 0}, // esc key 
         {'1', '!'},
@@ -74,8 +68,9 @@ char keyMap[][2] = { // [cantidad de teclas][2]
         {' ', ' '} // space 
     };
 
+// map the key to the corresponding character checking shift
 uint8_t getKeyMapping(uint64_t number) {
-    if(number == LEFT_SHIFT_NBR  || number == RIGHT_SHIFT_NBR){
+    if(number == LEFT_SHIFT_NBR  || number == RIGHT_SHIFT_NBR ){
         shiftPressed = 1;
     }
 
@@ -93,7 +88,8 @@ uint8_t getKeyMapping(uint64_t number) {
     return keyMap[number][0];
 }
 
-void keyboard_handler(uint64_t * registers){
+// function that handles the keyboard
+void keyboard_handler(){
     uint64_t key = get_key();
     char * buffer = getAddress();
     int buffer_pos = getPos();
@@ -107,7 +103,6 @@ void keyboard_handler(uint64_t * registers){
         newPos(0);
         buffer[0]=0;
     }
-    // ya pasados los chekeos, almaceno la key
     char letter = getKeyMapping(key);
     
     buffer[buffer_pos] = letter;
@@ -119,32 +114,19 @@ void keyboard_handler(uint64_t * registers){
     return;
 }
 
-void ncBackspace(){
-    int buffer_pos = getPos();
-    if(buffer_pos==0){
-        deleteBuffAt(buffer_pos);
-        buffer_pos = newPos(SIZE);
-    } else {
-        deleteBuffAt(buffer_pos);
-        buffer_pos--;
-        buffer_pos = newPos(buffer_pos);
-    }
-    delete(); // Llama a la función delete
-    return;
-}
-
+// function that reads the characters
 void readChar(uint8_t * buf, uint32_t count, uint32_t * size){
     char * buffer = getAddress();
-    int write_pos = getPos(); // Posición de escritura
-    int read_pos = getReadPos(); // Posición de lectura
+    int write_pos = getPos(); // get writing position
+    int read_pos = getReadPos(); // get reading position
     int i = 0;
     while(count !=0  && read_pos != write_pos){
         buf[i] = buffer[read_pos];
-        read_pos = (read_pos + 1) % SIZE; // Asume que SIZE es el tamaño del buffer
+        read_pos = (read_pos + 1) % SIZE;
         i++;
     }
     *size = i;
-    setReadPos(read_pos); // Actualiza la posición de lectura
+    setReadPos(read_pos); // update reading position
 }
 
 

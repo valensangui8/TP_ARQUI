@@ -2,42 +2,41 @@
 #include <stdint.h>
 #include <commands.h>
 
-char * commands[AMOUNT_OF_COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "invalidOpcode", "help", "registers", "date", "eliminator", "itba"};
-void (* commandsReferences[])() = {zoomIn, zoomOut, clear, div0, invalidOpcode, help, registers, date, eliminator, printLogo};
+char * commands[COMMANDS] = {"zoomIn", "zoomOut", "clear", "div0", "invalidOpcode", "help", "registers", "date", "eliminator", "itba"};
+void (* commandsFunctions[])() = {zoomIn, zoomOut, clear, div0, invalidOpcode, help, registers, date, eliminator, printLogo};
 
 void initialize_shell(char *command) {
     if(*command == 0){
         call_sys_enter();
         return;
     }
-    int id = interpretCommand(command);
+    int id = readCommand(command);
     char flag = 0;
     executeCommand(id, &flag, command);
 }
 
-int interpretCommand(char * command) {
-    int index = -1;
-    for (int i = 0; i < AMOUNT_OF_COMMANDS; i++) {
+int readCommand(char * command) {
+    for (int i = 0; i < COMMANDS; i++) {
         if (strcmp(command, commands[i]) == 0) {
             return i;
         }
     }
-    return index;
+    return -1;
 }
 
-void executeCommand(int indexCommand, char * flag, char * command) {
-    if (indexCommand == -1 ) {
+void executeCommand(int index, char * flag, char * command) {
+    if (index == -1 ) {
         call_sys_drawError(command);
         *flag = 0;
         return;
     }
     call_sys_commandEnter();
     char HeightPassed = 0;
-    call_sys_checkHeight(&HeightPassed,indexCommand);
+    call_sys_checkHeight(&HeightPassed,index);
     if(HeightPassed == 1){
         call_sys_clear();
     }
-    commandsReferences[indexCommand]();
+    commandsFunctions[index]();
     
     call_sys_enter();
     *flag = 1;

@@ -3,8 +3,5 @@ GLOBAL invalidOpcode
 section .text
 
 invalidOpcode:
-    jmp inval
+    rdpmc
     ret
-
-section .data 
-    inval equ 200

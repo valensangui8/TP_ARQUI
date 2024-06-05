@@ -1,3 +1,6 @@
+#ifndef BUF_KB_H
+#define BUF_KB_H
+
 #define SIZE 4096
 
 
@@ -18,3 +21,4 @@ void deleteBuffAt(int write_pos);
 void setReadPos(int read_pos);
 int getReadPos();
 
+#endif

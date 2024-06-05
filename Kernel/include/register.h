@@ -4,6 +4,7 @@
 #define REGISTERS 20
 
 #include <stdint.h>
+#include <videoDriver.h>
 //Estructura de los registros que se van a guardar en el snapshot y en las interrupciones
 typedef struct registerStructT{
 	uint64_t rax, rbx, rcx, rdx;
