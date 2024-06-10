@@ -123,6 +123,12 @@ printRegAsm:
 %macro irqHandlerMaster 1
 	pushState
 	
+	mov rdi, %1
+	cmp rdi, 1
+	jne .noSave
+	dState
+	
+	.noSave:
 	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call irqDispatcher
@@ -133,6 +139,7 @@ printRegAsm:
 
 	popState
 	iretq
+		
 %endmacro
 
 
